@@ -1,23 +1,34 @@
 import { useState } from "react";
-import { ClipboardCheck } from "lucide-react";
+import { ClipboardCheck, Lock } from "lucide-react";
 import { Header } from "@/components/Header";
 import { WelcomeHero } from "@/components/WelcomeHero";
+import { WelcomeScreen } from "@/components/WelcomeScreen";
 import { ModuleCard } from "@/components/ModuleCard";
 import { ModuleContent } from "@/components/ModuleContent";
 import { Quiz } from "@/components/Quiz";
+import { Certificate } from "@/components/Certificate";
 import { Button } from "@/components/ui/button";
 import { protocolData } from "@/data/protocolData";
 import { useProgress } from "@/hooks/useProgress";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 type View = "dashboard" | "module" | "quiz";
 
 export default function Index() {
   const [view, setView] = useState<View>("dashboard");
   const [selectedModule, setSelectedModule] = useState<string | null>(null);
-  const { progress, markModuleComplete, saveQuizScore, getCompletionPercentage } = useProgress();
+  const { progress, setUser, markModuleComplete, saveQuizScore, getCompletionPercentage } = useProgress();
 
   const completionPercentage = getCompletionPercentage(protocolData.length);
   const currentModule = protocolData.find((m) => m.id === selectedModule);
+  const allModulesComplete = protocolData.every((m) => progress.completedModules.includes(m.id));
+  const quizPassed = (progress.quizScores.main ?? 0) >= 70;
+  const canCertify = allModulesComplete && quizPassed;
+
+  // Show welcome screen if no user info
+  if (!progress.user) {
+    return <WelcomeScreen onLogin={(name, staffId) => setUser(name, staffId)} />;
+  }
 
   const handleModuleClick = (moduleId: string) => {
     setSelectedModule(moduleId);
@@ -41,12 +52,12 @@ export default function Index() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header completionPercentage={completionPercentage} />
+      <Header completionPercentage={completionPercentage} userName={progress.user.name} />
       
       <main className="container mx-auto px-4 py-8">
         {view === "dashboard" && (
           <>
-            <WelcomeHero />
+            <WelcomeHero userName={progress.user.name} />
             
             <div className="mb-8">
               <div className="flex items-center justify-between mb-6">
@@ -55,18 +66,36 @@ export default function Index() {
                     Training Modules
                   </h2>
                   <p className="text-muted-foreground">
-                    Complete all modules to finish your training
+                    Complete all modules to unlock the quiz
                   </p>
                 </div>
                 
-                <Button
-                  onClick={() => setView("quiz")}
-                  variant="outline"
-                  className="gap-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
-                >
-                  <ClipboardCheck className="h-4 w-4" />
-                  Take Quiz
-                </Button>
+                {allModulesComplete ? (
+                  <Button
+                    onClick={() => setView("quiz")}
+                    variant="outline"
+                    className="gap-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+                  >
+                    <ClipboardCheck className="h-4 w-4" />
+                    Take Quiz
+                  </Button>
+                ) : (
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className="gap-2 border-muted text-muted-foreground cursor-not-allowed opacity-60"
+                        disabled
+                      >
+                        <Lock className="h-4 w-4" />
+                        Take Quiz
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Complete all {protocolData.length} modules to unlock the quiz</p>
+                    </TooltipContent>
+                  </Tooltip>
+                )}
               </div>
               
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -89,6 +118,9 @@ export default function Index() {
                     <h3 className="font-semibold text-foreground">Quiz Results</h3>
                     <p className="text-sm text-muted-foreground">
                       Your best score: <span className="font-medium text-foreground">{progress.quizScores.main}%</span>
+                      {progress.quizScores.main < 70 && (
+                        <span className="text-destructive ml-2">(70% required to pass)</span>
+                      )}
                     </p>
                   </div>
                   <Button
@@ -99,6 +131,12 @@ export default function Index() {
                     Retake Quiz
                   </Button>
                 </div>
+              </div>
+            )}
+
+            {canCertify && (
+              <div className="mt-8">
+                <Certificate staffName={progress.user.name} quizScore={progress.quizScores.main} />
               </div>
             )}
           </>
@@ -127,7 +165,7 @@ export default function Index() {
                 Knowledge Assessment
               </h2>
               <p className="text-muted-foreground">
-                Test your understanding of the health and safety protocols
+                Test your understanding of the health and safety protocols. You need 70% to pass.
               </p>
             </div>
             
