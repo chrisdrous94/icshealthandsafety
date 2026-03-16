@@ -1,10 +1,12 @@
+import { User } from "lucide-react";
 import logo from "@/assets/logo.png";
 
 interface HeaderProps {
   completionPercentage: number;
+  userName?: string;
 }
 
-export function Header({ completionPercentage }: HeaderProps) {
+export function Header({ completionPercentage, userName }: HeaderProps) {
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80">
       <div className="container mx-auto px-4 py-4">
@@ -22,6 +24,12 @@ export function Header({ completionPercentage }: HeaderProps) {
           </div>
           
           <div className="flex items-center gap-4">
+            {userName && (
+              <div className="hidden sm:flex items-center gap-2 text-sm text-muted-foreground">
+                <User className="h-4 w-4" />
+                <span>{userName}</span>
+              </div>
+            )}
             <div className="text-right">
               <p className="text-sm font-medium text-foreground">
                 Progress

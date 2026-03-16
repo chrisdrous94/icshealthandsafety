@@ -1,7 +1,11 @@
 import { BookOpen, Shield, Award } from "lucide-react";
 import logo from "@/assets/logo.png";
 
-export function WelcomeHero() {
+interface WelcomeHeroProps {
+  userName?: string;
+}
+
+export function WelcomeHero({ userName }: WelcomeHeroProps) {
   return (
     <div className="relative overflow-hidden rounded-2xl gradient-hero p-8 md:p-12 mb-10">
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iNCIvPjwvZz48L2c+PC9zdmc+')] opacity-50" />
@@ -15,16 +19,16 @@ export function WelcomeHero() {
         
         <div className="text-center md:text-left">
           <h1 className="text-3xl md:text-4xl font-display font-bold text-white mb-3">
-            Health & Safety Training Portal
+            {userName ? `Welcome, ${userName}!` : "Health & Safety Training Portal"}
           </h1>
           <p className="text-lg text-white/80 max-w-2xl mb-6">
-            Welcome to the I CAN SCHOOL staff training platform. Complete all modules to ensure you're prepared to keep our students and community safe.
+            Complete all training modules, pass the knowledge quiz with 70% or higher, and download your certificate of completion.
           </p>
           
           <div className="flex flex-wrap justify-center md:justify-start gap-6">
             <div className="flex items-center gap-2 text-white/90">
               <BookOpen className="h-5 w-5" />
-              <span className="text-sm font-medium">7 Modules</span>
+              <span className="text-sm font-medium">{8} Modules</span>
             </div>
             <div className="flex items-center gap-2 text-white/90">
               <Shield className="h-5 w-5" />
@@ -32,7 +36,7 @@ export function WelcomeHero() {
             </div>
             <div className="flex items-center gap-2 text-white/90">
               <Award className="h-5 w-5" />
-              <span className="text-sm font-medium">Knowledge Quiz</span>
+              <span className="text-sm font-medium">Certificate on Completion</span>
             </div>
           </div>
         </div>

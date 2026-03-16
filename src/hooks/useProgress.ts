@@ -1,9 +1,15 @@
 import { useState, useEffect } from "react";
 
+interface UserInfo {
+  name: string;
+  staffId: string;
+}
+
 interface Progress {
   completedModules: string[];
   quizScores: Record<string, number>;
   lastVisited: string | null;
+  user: UserInfo | null;
 }
 
 const STORAGE_KEY = "ics-health-safety-progress";
@@ -12,18 +18,26 @@ const defaultProgress: Progress = {
   completedModules: [],
   quizScores: {},
   lastVisited: null,
+  user: null,
 };
 
 export function useProgress() {
   const [progress, setProgress] = useState<Progress>(() => {
     if (typeof window === "undefined") return defaultProgress;
     const stored = localStorage.getItem(STORAGE_KEY);
-    return stored ? JSON.parse(stored) : defaultProgress;
+    return stored ? { ...defaultProgress, ...JSON.parse(stored) } : defaultProgress;
   });
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
   }, [progress]);
+
+  const setUser = (name: string, staffId: string) => {
+    setProgress((prev) => ({
+      ...prev,
+      user: { name, staffId },
+    }));
+  };
 
   const markModuleComplete = (moduleId: string) => {
     setProgress((prev) => ({
@@ -61,6 +75,7 @@ export function useProgress() {
 
   return {
     progress,
+    setUser,
     markModuleComplete,
     saveQuizScore,
     setLastVisited,
