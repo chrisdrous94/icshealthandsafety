@@ -1,8 +1,9 @@
-import { ArrowLeft, CheckCircle2, ChevronDown, ChevronUp } from "lucide-react";
+import { ArrowLeft, CheckCircle2, ChevronDown, ChevronUp, MapPin } from "lucide-react";
 import { useState } from "react";
 import { ProtocolSection } from "@/data/protocolData";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import floorPlan from "@/assets/floor-plan.png";
 
 interface ModuleContentProps {
   module: ProtocolSection;
