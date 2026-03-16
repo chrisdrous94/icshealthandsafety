@@ -73,6 +73,29 @@ export function ModuleContent({ module, onBack, onComplete, isCompleted }: Modul
         </p>
       </div>
 
+      {module.id === "emergency" && (
+        <div className="mb-8 rounded-xl border border-border bg-card p-6 shadow-card">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-destructive/10">
+              <MapPin className="h-5 w-5 text-destructive" />
+            </div>
+            <div>
+              <h3 className="font-semibold text-foreground">School Floor Plan & Evacuation Map</h3>
+              <p className="text-sm text-muted-foreground">Reference diagram for evacuation routes and assembly points</p>
+            </div>
+          </div>
+          <div className="rounded-lg overflow-hidden border border-border mb-4">
+            <img src={floorPlan} alt="School Floor Plan and Evacuation Map" className="w-full h-auto" />
+          </div>
+          <div className="bg-accent/10 rounded-lg p-4 border border-accent/20">
+            <p className="text-sm text-foreground font-medium mb-1">⚠️ Important</p>
+            <p className="text-sm text-muted-foreground">
+              Staff must familiarize themselves with both primary and secondary evacuation routes based on their specific classroom or office location. Identify the nearest fire exit and your designated assembly point (Front or Rear) before an emergency occurs.
+            </p>
+          </div>
+        </div>
+      )}
+
       <div className="space-y-4 mb-8">
         {module.subsections.map((subsection, index) => {
           const isExpanded = expandedSections.includes(subsection.id);
