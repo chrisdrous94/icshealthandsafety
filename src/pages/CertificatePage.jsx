@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import API from '../lib/api';
+import API, { API_BASE_URL } from '../lib/api';
 import { toast } from 'sonner';
 import { Award, Download, Trash2, Calendar, User, Clock, AlertTriangle } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '../components/ui/dialog';
@@ -19,7 +19,7 @@ export default function CertificatePage() {
   }, []);
 
   const downloadCert = (certId) => {
-    window.open(`${process.env.REACT_APP_BACKEND_URL}/api/certificates/${certId}/download`, '_blank');
+    window.open(`${API_BASE_URL}/certificates/${certId}/download`, '_blank');
   };
 
   const confirmRevoke = (cert) => {
