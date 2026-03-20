@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap');
+
+@import "tailwindcss";
+
+@theme {
+  --radius: 1.75rem;
+  --color-background: hsl(120 20% 98%);
+  --color-foreground: hsl(150 12% 10%);
+  --color-card: hsl(120 14% 95%);
+  --color-card-foreground: hsl(150 12% 10%);
+  --color-popover: hsl(0 0% 100%);
+  --color-popover-foreground: hsl(150 12% 10%);
+  --color-primary: hsl(160 100% 21%);
+  --color-primary-foreground: hsl(0 0% 100%);
+  --color-secondary: hsl(140 13% 35%);
+  --color-secondary-foreground: hsl(150 35% 8%);
+  --color-muted: hsl(130 10% 90%);
+  --color-muted-foreground: hsl(140 8% 40%);
+  --color-accent: hsl(195 30% 34%);
+  --color-accent-foreground: hsl(200 50% 8%);
+  --color-destructive: hsl(0 72% 41%);
+  --color-destructive-foreground: hsl(0 0% 100%);
+  --color-border: hsl(130 10% 85%);
+  --color-input: hsl(130 10% 85%);
+  --color-ring: hsl(160 100% 21%);
+  --color-chart-1: hsl(160 100% 21%);
+  --color-chart-2: hsl(140 13% 35%);
+  --color-chart-3: hsl(195 30% 34%);
+  --color-chart-4: hsl(0 72% 41%);
+  --color-chart-5: hsl(130 10% 50%);
+}
+
+* {
+  box-sizing: border-box;
+  border-color: var(--color-border);
+}
+
+body {
+  margin: 0;
+  font-family: 'Manrope', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #DBE5DE; border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: #707973; }
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+.animate-fade-in-up { animation: fadeInUp 0.4s ease-out both; }
+.animate-fade-in { animation: fadeIn 0.3s ease-out both; }
+.animate-scale-in { animation: scaleIn 0.3s ease-out both; }
